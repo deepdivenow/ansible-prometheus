@@ -1,0 +1,6 @@
+---
+- name: Start prometheus/alertmanager
+  service: name="{{ item }}" enabled=yes state=started
+  with_items:
+    - prometheus
+    - alertmanager

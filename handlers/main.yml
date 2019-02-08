@@ -1,0 +1,34 @@
+---
+# handlers file for roles/prometheus-server
+- name: restart prometheus
+  systemd: name=prometheus state=restarted daemon_reload=yes
+
+- name: reload prometheus
+  uri:
+    url: http://localhost:9090/-/reload
+    method: POST
+  listen: "reload prometheus"
+
+- name: restart alertmanager
+  systemd: name=alertmanager state=restarted daemon_reload=yes
+
+- name: restart grafana-server
+  systemd: name=grafana-server state=restarted daemon_reload=yes
+
+- name: generate uuid
+  command: uuidgen
+  with_sequence: count=5
+  register: uuid
+  tags: grafana
+  notify: change grafana key
+  listen: "generate uuid"
+
+- name: change grafana key
+  ini_file: dest=/etc/grafana/grafana.ini
+            section=security
+            option=secret_key
+            value={{ (uuid.results|random).stdout }}
+            backup=yes
+  notify: restart grafana-server
+  listen: "change grafana key"
+  tags: grafana

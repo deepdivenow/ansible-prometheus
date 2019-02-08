@@ -1,0 +1,25 @@
+---
+# tasks file for prometheus server
+- import_tasks: prometheus_install.yml
+  when: prometheus_enable
+  tags: [prometheus, prometheus_install]
+
+- import_tasks: prometheus_config.yml
+  when: prometheus_enable
+  tags: [prometheus,prometheus_configure]
+
+- import_tasks: prometheus_service.yml
+  when: prometheus_enable
+  tags: [prometheus,prometheus_service]
+
+- import_tasks: grafana_install.yml
+  when: grafana_enable
+  tags: [grafana,grafana_install]
+
+#- import_tasks: grafana_config.yml
+#  when: grafana_enable
+#  tags: [grafana,grafana_configure]
+#
+#- import_tasks: grafana_service.yml
+#  when: grafana_enable
+#  tags: [grafana,grafana_service]

@@ -1,0 +1,28 @@
+#      The timeout to use when sending samples to the remote storage.
+#
+#Web:
+#  -web.console.libraries=console_libraries
+#      Path to the console library directory.
+#  -web.console.templates=consoles
+#      Path to the console template directory, available at /console.
+#  -web.enable-remote-shutdown=false
+#      Enable remote service shutdown.
+#  -web.hostname=""
+#      Hostname on which the server is available.
+#  -web.listen-address=:9090
+#      Address to listen on for the web interface, API, and telemetry.
+#  -web.path-prefix=""
+#      Prefix for all web paths.
+#  -web.telemetry-path=/metrics
+#      Path under which to expose metrics.
+#  -web.use-local-assets=false
+#      Read assets/templates from file instead of binary.
+#  -web.user-assets=""
+#      Path to static asset directory, available at /user.
+
+#
+# -storage.local.target-heap-size is around 30% of RAM
+
+
+# 2.x opts
+PROMETHEUS_OPTS='--config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/var/lib/prometheus2/data --web.enable-lifecycle --storage.tsdb.retention=180d'

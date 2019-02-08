@@ -1,0 +1,32 @@
+---
+- name: Add prometheus repository
+  yum_repository:
+    name: prometheus
+    description: Prometheus packagecloud repository
+    baseurl: https://packagecloud.io/prometheus-rpm/release/el/7/$basearch
+    gpgcheck: True
+    gpgkey:
+      - 'https://packagecloud.io/prometheus-rpm/release/gpgkey'
+      - 'https://raw.githubusercontent.com/lest/prometheus-rpm/master/RPM-GPG-KEY-prometheus-rpm'
+    sslverify: True
+    sslcacert: '/etc/pki/tls/certs/ca-bundle.crt'
+    metadata_expire: 3600
+
+- name: Install prometheus/alertmanager
+  yum:
+     name: "{{ prometheus_packages }}"
+     update_cache: True
+     state: present
+     enablerepo: "prometheus"
+
+- name: Create prometheus directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: prometheus
+    group: prometheus
+    recurse: True
+  with_items:
+  - '/var/lib/prometheus2'
+  - '/etc/prometheus/hosts'
+  - '/etc/prometheus/rules'

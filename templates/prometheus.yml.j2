@@ -1,0 +1,28 @@
+global:
+
+  scrape_interval: "{{ prometheus_scrape_interval }}"
+  scrape_timeout: "{{ prometheus_scrape_timeout }}"
+  evaluation_interval: "{{ prometheus_evaluation_interval }}"
+
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - localhost:9093
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+    - targets: ['localhost:9090']
+
+{% for service in prometheus_scrape_services %}
+  - job_name: '{{ service }}'
+    scrape_interval: "{{ self_scrape_interval }}"
+    metrics_path: /metrics
+    file_sd_configs:
+        - files:
+            - '/etc/prometheus/hosts/{{ service }}*.yaml'
+{% endfor %}
+
+rule_files:
+    - '/etc/prometheus/rules/*.rules.yml'

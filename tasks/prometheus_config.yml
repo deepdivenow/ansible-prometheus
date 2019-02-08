@@ -1,0 +1,38 @@
+---
+- name: Install prometheus service
+  template:
+    src=prometheus.default.j2
+    dest=/etc/default/prometheus
+    mode=0644
+  notify: restart prometheus
+
+- name: Install prometheus static piece of config
+  template:
+    src=prometheus.yml.j2
+    dest=/etc/prometheus/prometheus.yml
+    mode=0644
+  notify: restart prometheus
+
+#- name: Install prometheus rules
+#  template:
+#     src="{{ item.src }}"
+#     dest="{{ item.dest }}"
+#     mode=0644
+#  notify: reload prometheus
+#  with_items: "{{ prometheus_rule_files }}"
+
+- name: Install alertmanager service
+  template:
+    src=alertmanager.default.j2
+    dest=/etc/default/alertmanager
+    mode=0644
+  notify: restart alertmanager
+  tags: config
+
+- name: Install alertmanager config
+  template:
+    src=alertmanager.yml.j2
+    dest=/etc/prometheus/alertmanager.yml
+    mode=0644
+  notify: restart alertmanager
+  tags: config

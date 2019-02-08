@@ -1,0 +1,85 @@
+---
+# defaults file for prometheus_server
+
+need_blackbox: false
+blackbox_urls:
+  - example.org
+
+# prometheus vars
+prometheus_enable: True
+prometheus_scrape_services: []
+prometheus_packages: ['prometheus2', 'alertmanager'] #blackbox_exporter
+prometheus_scrape_interval: "15s"
+prometheus_scrape_timeout: "10s"
+prometheus_evaluation_interval: "15s"
+prometheus_email_alerts: true
+prometheus_telegram_alerts: false
+prometheus_telegram_chatid: CHANGE_ME
+prometheus_telegram_token: CHANGE_ME
+self_scrape_interval: "15s"
+
+# history size
+storage: "4464h0m0s"
+
+# inventory labels
+label_self: self
+label_node: nodes
+
+# alertmanager vars
+alertmanager_smtp_smarthost: localhost:25
+alertmanager_smtp_from: "alertmanager@example.org"
+alertmanager_group_owner: "admin"
+alertmanager_group_name: "admins"
+alertmanager_group_wait: "5s"
+alertmanager_group_interval: "1m"
+alertmanager_repeat_interval: "12h"
+alertmanager_receivers_to: "monitoring@example.org"
+
+# grafana vars - server
+grafana_enable: True
+grafana_http_port: 3000
+grafana_http_addr: 0.0.0.0
+grafana_auto_assign_org: false
+grafana_root_url: "%(protocol)s://%(domain)s:%(http_port)s/"
+grafana_github_auth_enabled: false
+grafana_github_client_id: some_id
+grafana_github_client_secret: some_secret
+grafana_github_allow_sign_up: "false"
+grafana_github_team_ids: []
+grafana_basic_auth_enabled: true
+grafana_latest: true
+
+# grafana vars - servers and attributes
+grafana_allow_sign_up: "false"
+#
+grafana_ifnoldap_admin_username: "{{ grafana_admin_user }}"
+grafana_ifnoldap_admin_password: "{{ grafana_admin_pass }}"
+#
+grafana_ldap_enabled: "true"
+grafana_ldap_config: "/etc/grafana/ldap.toml"
+grafana_ldap_server: crowd.unitedtraders.team
+grafana_ldap_port: 10389
+grafana_use_ssl: "false"
+grafana_skip_verify: "false"
+#
+grafana_bind_dn: "cn={{ ldap_bind_username }},ou=users,dc=crowd"
+grafana_bind_password: "{{ ldap_bind_password }}"
+#
+grafana_search_filter: "(uid=%s)"
+grafana_search_base_dns: "ou=users,dc=crowd"
+grafana_group_search_filter: "(&(objectClass=posixGroup)(memberUid=%s))"
+grafana_group_search_base_dns: "ou=groups,dc=crowd"
+#
+grafana_ldap_att_name: givenName
+grafana_ldap_att_surname: sn
+grafana_ldap_att_username: uid
+grafana_ldap_att_membership: memberOf
+grafana_ldap_att_email_address: email
+#
+grafana_ldap_admin: dn=monitoring-admins,ou=groups,dc=crowd
+grafana_ldap_edit: dn=monitoring-editors,ou=groups,dc=crowd
+grafana_ldap_view: dn=monitoring-viewers,ou=groups,dc=crowd
+
+
+
+zookeeper_cluster_count: 1

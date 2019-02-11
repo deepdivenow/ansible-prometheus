@@ -1,0 +1,3 @@
+---
+- name: Start grafana
+  service: name=grafana-server enabled=yes state=started

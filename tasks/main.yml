@@ -20,6 +20,6 @@
 #  when: grafana_enable
 #  tags: [grafana,grafana_configure]
 #
-#- import_tasks: grafana_service.yml
-#  when: grafana_enable
-#  tags: [grafana,grafana_service]
+- import_tasks: grafana_service.yml
+  when: grafana_enable
+  tags: [grafana,grafana_service]

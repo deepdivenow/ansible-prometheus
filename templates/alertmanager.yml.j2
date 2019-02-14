@@ -3,45 +3,45 @@ global:
   smtp_from: '{{ alertmanager_smtp_from }}'
 
 route:
-  receiver: luna_admins
+  receiver: prod_admins
   group_by: ['alertname', 'name', 'instance']
   group_wait: {{ alertmanager_group_wait }}
   group_interval: {{ alertmanager_group_interval }}
   repeat_interval: {{ alertmanager_repeat_interval }}
 
-  routes:
-  - match:
-      team: aurora
-    receiver: aurora_admins
-  - match:
-      team: luna
-    receiver: luna_admins
-  - match:
-      job: luna-services
-    receiver: luna_admins
+{#  routes:#}
+{#  - match:#}
+{#      team: dba#}
+{#    receiver: dba_admins#}
+{#  - match:#}
+{#      team: server#}
+{#    receiver: servers_admins#}
+{#  - match:#}
+{#      job: prod-services#}
+{#    receiver: prod_admins#}
 
 receivers:
-- name: luna_admins
+- name: prod_admins
 {% if prometheus_email_alerts == true %}
   email_configs:
   - to: '{{ alertmanager_receivers_to }}'
     require_tls: false
     send_resolved: true
 {% endif %}
-{% if prometheus_telegram_alerts == true %}
-  webhook_configs:
-  - send_resolved: True
-    url: http://127.0.0.1:9087/alert/{{ prometheus_luna_telegram_chatid }}
-{% endif %}
-- name: aurora_admins
-{% if prometheus_email_alerts == true %}
-  email_configs:
-  - to: '{{ alertmanager_receivers_to }}'
-    require_tls: false
-    send_resolved: true
-{% endif %}
-{% if prometheus_telegram_alerts == true %}
-  webhook_configs:
-  - send_resolved: True
-    url: http://127.0.0.1:9087/alert/{{ prometheus_aurora_telegram_chatid }}
-{% endif %}
+{#{% if prometheus_telegram_alerts == true %}#}
+{#  webhook_configs:#}
+{#  - send_resolved: True#}
+{#    url: http://127.0.0.1:9087/alert/{{ prometheus_luna_telegram_chatid }}#}
+{#{% endif %}#}
+{#- name: aurora_admins#}
+{#{% if prometheus_email_alerts == true %}#}
+{#  email_configs:#}
+{#  - to: '{{ alertmanager_receivers_to }}'#}
+{#    require_tls: false#}
+{#    send_resolved: true#}
+{#{% endif %}#}
+{#{% if prometheus_telegram_alerts == true %}#}
+{#  webhook_configs:#}
+{#  - send_resolved: True#}
+{#    url: http://127.0.0.1:9087/alert/{{ prometheus_aurora_telegram_chatid }}#}
+{#{% endif %}#}
